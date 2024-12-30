@@ -29,18 +29,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "file": {
+                  "image": {
                     "type": "string",
                     "format": "binary",
                     "description": "The image file to compress."
-                  },
-                  "quality": {
-                    "type": "integer",
-                    "description": "Compression quality (default is 10).",
-                    "default": 10
                   }
                 },
-                "required": ["file"]
+                "required": ["image"]
               }
             }
           },
