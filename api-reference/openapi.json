@@ -189,6 +189,80 @@
           }
         }
       }
+    },
+    "/pan-signature-extraction": {
+      "post": {
+        "summary": "Extract signature of the person from PAN card",
+        "description": "This endpoint extracts the signature from a PAN card image and returns the signature as a PNG image.",
+        "requestBody": {
+          "description": "Image file of the PAN card from which the signature is to be extracted.",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The image file of the PAN card to extract the signature from."
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The extracted signature as a PNG image.",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Possible issues: signature not detected or invalid PAN card image.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Signature not found in the image."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred during signature extraction.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Signature extraction failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred: Processing issue."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
