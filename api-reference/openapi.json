@@ -59,7 +59,7 @@
             }
           },
           "400": {
-            "description": "Invalid parameters or failed compression.",
+            "description": "Bad Request. Possible issues: invalid image file or compression service failure.",
             "content": {
               "application/json": {
                 "schema": {
@@ -67,7 +67,7 @@
                   "properties": {
                     "detail": {
                       "type": "string",
-                      "example": "Compression failed: Compressed file is not smaller."
+                      "example": "Image compression failed: Invalid image file."
                     }
                   }
                 }
@@ -75,15 +75,19 @@
             }
           },
           "500": {
-            "description": "Internal server error.",
+            "description": "Internal Server Error. An unexpected error occurred during compression.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "detail": {
+                    "error": {
                       "type": "string",
-                      "example": "Server error during compression."
+                      "example": "Image compression failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred: Memory allocation issue."
                     }
                   }
                 }
@@ -96,42 +100,6 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
       "Error": {
         "required": [
           "error",
