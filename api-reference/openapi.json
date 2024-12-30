@@ -36,6 +36,9 @@
                   }
                 },
                 "required": ["image"]
+              },
+              "example": {
+                "image": "@example_image.jpg"
               }
             }
           },
@@ -79,104 +82,6 @@
                     "error": {
                       "type": "string",
                       "example": "Image compression failed."
-                    },
-                    "details": {
-                      "type": "string",
-                      "example": "An unexpected error occurred: Memory allocation issue."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/document-identification": {
-      "post": {
-        "summary": "Identifies the card, its side, and if it's blurry or grayscale",
-        "description": "This endpoint detects the card type from an image, identifies its side (front or back), and checks if the image is blurry or grayscale.",
-        "requestBody": {
-          "description": "Image file to be analyzed for card identification.",
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "image": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "The image file to analyze."
-                  }
-                },
-                "required": ["image"]
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "The card identification result, including card type, side, and image quality status.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "cardType": {
-                      "type": "string",
-                      "description": "The type of card identified (e.g., ID card, credit card, etc.)."
-                    },
-                    "side": {
-                      "type": "string",
-                      "enum": ["front", "back"],
-                      "description": "The identified side of the card (front or back)."
-                    },
-                    "isBlurry": {
-                      "type": "boolean",
-                      "description": "Indicates if the image is blurry."
-                    },
-                    "isGrayscale": {
-                      "type": "boolean",
-                      "description": "Indicates if the image is grayscale."
-                    }
-                  },
-                  "example": {
-                    "cardType": "ID card",
-                    "side": "front",
-                    "isBlurry": false,
-                    "isGrayscale": false
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request. Possible issues: invalid image file or detection failure.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "detail": {
-                      "type": "string",
-                      "example": "Card detection failed: Invalid image file."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error. An unexpected error occurred during card detection.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Card detection failed."
                     },
                     "details": {
                       "type": "string",
