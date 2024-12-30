@@ -131,59 +131,26 @@
     },
     "/compress-extreme-image": {
       "post": {
-        "description": "Compresses an image to an extreme degree, reducing file size significantly.",
-        "parameters": [
-          {
-            "name": "image_path",
-            "in": "query",
-            "description": "Path to the input image file.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "output_path",
-            "in": "query",
-            "description": "Path where the compressed image will be saved.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "quality",
-            "in": "query",
-            "description": "Compression quality (default is 10).",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
+        "description": "Compresses an image to an extreme degree, reducing file size significantly and returns the compressed image for download.",
         "requestBody": {
-          "description": "Details of the image compression request",
+          "description": "Image file to be compressed.",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "image_path": {
+                  "file": {
                     "type": "string",
-                    "description": "Path to the input image"
-                },
-                  "output_path": {
-                    "type": "string",
-                    "description": "Path where the compressed image will be saved"
+                    "format": "binary",
+                    "description": "The image file to compress."
                   },
                   "quality": {
                     "type": "integer",
-                    "description": "Compression quality (default is 10)",
+                    "description": "Compression quality (default is 10).",
                     "default": 10
                   }
                 },
-                "required": ["image_path", "output_path"]
+                "required": ["file"]
               }
             }
           },
@@ -191,31 +158,18 @@
         },
         "responses": {
           "200": {
-            "description": "Successful compression",
+            "description": "Compressed image returned for download.",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "original_size": {
-                      "type": "integer",
-                      "example": 500000
-                    },
-                    "compressed_size": {
-                      "type": "integer",
-                      "example": 250000
-                    }
-                  }
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid parameters or failed compression",
+            "description": "Invalid parameters or failed compression.",
             "content": {
               "application/json": {
                 "schema": {
@@ -223,7 +177,7 @@
                   "properties": {
                     "detail": {
                       "type": "string",
-                      "example": "Compression failed: Compressed file is not smaller"
+                      "example": "Compression failed: Compressed file is not smaller."
                     }
                   }
                 }
@@ -231,7 +185,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Internal server error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -239,7 +193,7 @@
                   "properties": {
                     "detail": {
                       "type": "string",
-                      "example": "Server error during compression"
+                      "example": "Server error during compression."
                     }
                   }
                 }
