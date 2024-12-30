@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://eem8awwavp.us-east-1.awsapprunner.com/api/v1"
     }
   ],
   "security": [
