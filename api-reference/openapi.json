@@ -36,6 +36,9 @@
                   }
                 },
                 "required": ["image"]
+              },
+              "example": {
+                "image": "@example_image.jpg"
               }
             }
           },
