@@ -552,8 +552,8 @@
     },
     "/aadhaar-ocr": {
       "post": {
-        "summary": "Extract relevant Data from the Aadhaar Card",
-        "description": "This endpoint extracts information such as Aadhaar Number, Name, and other relevant data from the Aadhaar card image.",
+        "summary": "Extract relevant data from the Aadhaar Card",
+        "description": "This endpoint extracts detailed information from an Aadhaar card image, including Aadhaar Number, Name, Gender, Date of Birth, Address, and Pincode.",
         "requestBody": {
           "description": "Two images of the Aadhaar card for OCR processing. The first image is the front side, and the second image is the back side.",
           "content": {
@@ -586,23 +586,45 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "aadhaar_number": {
+                    "Aadhaar_number": {
                       "type": "string",
-                      "example": "645612790918"
+                      "description": "The Aadhaar number extracted from the card.",
+                      "example": "6246 7290 1324"
                     },
-                    "name": {
+                    "Gender": {
                       "type": "string",
-                      "example": "John Doe"
-                    },
-                    "dob": {
-                      "type": "string",
-                      "example": "01/01/1980"
-                    },
-                    "gender": {
-                      "type": "string",
+                      "description": "The gender of the Aadhaar holder.",
                       "example": "Male"
+                    },
+                    "Name": {
+                      "type": "string",
+                      "description": "The name of the Aadhaar holder.",
+                      "example": "Jimmit Patel"
+                    },
+                    "Date of Birth": {
+                      "type": "string",
+                      "description": "The date of birth of the Aadhaar holder.",
+                      "example": "12/05/1996"
+                    },
+                    "Address": {
+                      "type": "string",
+                      "description": "The address of the Aadhaar holder.",
+                      "example": "C-304, Surya Kutir, 100 Feet Road, Opp. Sai Baba Mandir, Near Railway Station, Ahmedabad, Gujarat"
+                    },
+                    "Pincode": {
+                      "type": "string",
+                      "description": "The pincode of the Aadhaar holder's address.",
+                      "example": "381001"
                     }
                   }
+                },
+                "example": {
+                  "Aadhaar_number": "6246 7290 1324",
+                  "Gender": "Male",
+                  "Name": "Jimmit Patel",
+                  "Date of Birth": "12/05/1996",
+                  "Address": "C-304, Surya Kutir, 100 Feet Road, Opp. Sai Baba Mandir, Near Railway Station, Ahmedabad, Gujarat",
+                  "Pincode": "381001"
                 }
               }
             }
@@ -645,6 +667,8 @@
           }
         }
       }
+    }
+
     },
     "/pan-ocr": {
       "post": {
