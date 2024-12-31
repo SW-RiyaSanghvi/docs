@@ -1963,39 +1963,74 @@
     "/get-geolocation": {
       "get": {
         "summary": "Returns the geolocation of the client based on their IP address",
+        "description": "This endpoint retrieves the geolocation information of the client based on their public IP address.",
         "responses": {
           "200": {
-            "description": "Successfully retrieved geolocation information",
+            "description": "Successfully retrieved geolocation information.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "ip": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The public IP address of the client.",
+                      "example": "2405:201:2014:6948:3953:3d44:e3c4:c66f"
                     },
                     "country": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The country of the client.",
+                      "example": "India"
                     },
                     "region": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The region or state of the client.",
+                      "example": "Gujarat"
                     },
                     "city": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The city of the client.",
+                      "example": "Surat"
                     },
                     "latitude": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The latitude of the client's location.",
+                      "example": 21.1888
                     },
                     "longitude": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The longitude of the client's location.",
+                      "example": 72.8293
                     }
                   }
+                },
+                "example": {
+                  "ip": "2405:201:2014:6948:3953:3d44:e3c4:c66f",
+                  "country": "India",
+                  "region": "Gujarat",
+                  "city": "Surat",
+                  "latitude": 21.1888,
+                  "longitude": 72.8293
                 }
               }
             }
           },
           "500": {
-            "description": "Unable to fetch geolocation"
+            "description": "Unable to fetch geolocation due to an internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error.",
+                      "example": "Failed to retrieve geolocation information."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
