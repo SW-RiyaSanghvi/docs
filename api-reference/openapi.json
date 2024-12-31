@@ -263,6 +263,1317 @@
           }
         }
       }
+    },
+    "/picture-extraction": {
+      "post": {
+        "summary": "Extract image of the person from any document",
+        "description": "This endpoint extracts the photo of the person from any document image and returns the extracted image as a PNG file.",
+        "requestBody": {
+          "description": "Image file from which the person's photo is to be extracted.",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The image file to extract the person's photo from."
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The extracted photo as a PNG image.",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Possible issues: photo not detected or invalid document image.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Photo not detected on the document."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred during photo extraction.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Photo extraction failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred: Processing issue."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal-verification": {
+      "post": {
+        "summary": "Verify if the extracted information from cards are as per gov guidelines to mitigate tamper",
+        "description": "This endpoint accepts a JSON Aadhaar Number as a string for Aadhaar internal verification and for PAN Internal Verification it accepts PAN Number and Holder's Name as string. Example: For Aadhaar card - {\"Aadhaar_number\": \"645612790918\"} and PAN Card - {\"PAN_number\": \"ADLDS0079V\", \"Name\": \"Your Name\"}",
+        "requestBody": {
+          "description": "A JSON object containing Aadhaar or PAN card details for internal verification.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Aadhaar_number": {
+                    "type": "string",
+                    "description": "Aadhaar number for internal verification."
+                  },
+                  "PAN_number": {
+                    "type": "string",
+                    "description": "PAN number for internal verification."
+                  },
+                  "Name": {
+                    "type": "string",
+                    "description": "Holder's name for PAN verification."
+                  }
+                },
+                "example": {
+                  "Aadhaar_number": "645612790918",
+                  "PAN_number": "ADLDS0079V",
+                  "Name": "Your Name"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Verification result, either success or failure with explanation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Verification successful."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "Aadhaar and PAN verification passed according to government guidelines."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Invalid Aadhaar number, PAN number, or missing details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Invalid Aadhaar number or PAN number."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred during verification.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Verification failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred: Processing issue."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aadhaar-demographic-verification": {
+      "post": {
+        "summary": "Extracts basic details of the non-consent use from Aadhar images",
+        "description": "This endpoint accepts a JSON Aadhaar Number, pincode and dob as a string. Example: {\"aadhaar_number\": \"645612790918\", \"dob\": \"12/02/1998\", \"pincode\": \"380245\"}",
+        "requestBody": {
+          "description": "The Aadhaar number, date of birth, and pincode for demographic verification.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "aadhaar_number": {
+                    "type": "string",
+                    "description": "The Aadhaar number to verify."
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The date of birth in dd/mm/yyyy format."
+                  },
+                  "pincode": {
+                    "type": "string",
+                    "description": "The pincode associated with the Aadhaar number."
+                  }
+                },
+                "required": ["aadhaar_number", "dob", "pincode"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response with the verification result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "verification_status": {
+                      "type": "string",
+                      "example": "Verified"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "The demographic details are valid."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Possible issues: missing or invalid Aadhaar number, dob, or pincode.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Invalid Aadhaar details."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred during Aadhaar verification.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Verification failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred during the demographic verification process."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aadhaar-ocr": {
+      "post": {
+        "summary": "Extract relevant Data from the Aadhaar Card",
+        "description": "This endpoint extracts information such as Aadhaar Number, Name, and other relevant data from the Aadhaar card image.",
+        "requestBody": {
+          "description": "Two images of the Aadhaar card for OCR processing. The first image is the front side, and the second image is the back side.",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image1": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The first image (front side of the Aadhaar card)."
+                  },
+                  "image2": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The second image (back side of the Aadhaar card)."
+                  }
+                },
+                "required": ["image1", "image2"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully extracted Aadhaar information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "aadhaar_number": {
+                      "type": "string",
+                      "example": "645612790918"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "dob": {
+                      "type": "string",
+                      "example": "01/01/1980"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "Male"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Possible issues: missing or invalid images or OCR failure.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Unable to extract or verify Aadhaar information."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred during OCR processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "OCR failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred while extracting data from the images."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pan-ocr": {
+      "post": {
+        "summary": "Extract relevant Data from the PAN Card",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully extracted PAN information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pan_number": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "dob": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to extract or verify PAN information"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/image-quality-analyzer": {
+      "post": {
+        "summary": "Analyzes images based on various standard scores like BRISQUE, blurriness, etc.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully analyzed image quality",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "brisque_score": {
+                      "type": "number"
+                    },
+                    "blurriness_score": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid image file"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/aadhaar-demographic-ocr": {
+      "post": {
+        "summary": "Extracts basic details of the non-consent use from Aadhar images",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image1": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "image2": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image1", "image2"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully extracted demographic details from Aadhaar images",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "aadhaar_number": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "dob": {
+                      "type": "string"
+                    },
+                    "gender": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to extract or verify Aadhaar demographic information"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/aadhaar-verification": {
+      "post": {
+        "summary": "Complete end-to-end Aadhaar Verification from the images of Aadhaar Card",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image1": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "image2": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image1", "image2"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully completed Aadhaar verification"
+          },
+          "400": {
+            "description": "Verification failed"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/pan-verification": {
+      "post": {
+        "summary": "Complete end-to-end PAN Verification from the image of PAN Card",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully completed PAN verification"
+          },
+          "400": {
+            "description": "Verification failed"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/compress-large-image": {
+      "post": {
+        "summary": "Compress large images of up to 500 MB to 40 KB",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully compressed the image",
+            "content": {
+              "image/jpeg": {}
+            }
+          },
+          "400": {
+            "description": "Image file exceeds the 500 MB limit"
+          },
+          "500": {
+            "description": "Image compression failed"
+          }
+        }
+      }
+    },
+    "/compress-medium-image": {
+      "post": {
+        "summary": "Compress medium-sized images of up to 250 MB to 40 KB",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully compressed the image",
+            "content": {
+              "image/jpeg": {}
+            }
+          },
+          "400": {
+            "description": "Image file exceeds the 250 MB limit"
+          },
+          "500": {
+            "description": "Image compression failed"
+          }
+        }
+      }
+    },
+    "/compress-small-image": {
+      "post": {
+        "summary": "Compress small images of up to 75 MB to 40 KB",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully compressed the image",
+            "content": {
+              "image/jpeg": {}
+            }
+          },
+          "400": {
+            "description": "Image file exceeds the 75 MB limit"
+          },
+          "500": {
+            "description": "Image compression failed"
+          }
+        }
+      }
+    },
+    "/compress-nano-image": {
+      "post": {
+        "summary": "Compress small images of up to 20 MB to 40 KB",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully compressed the image",
+            "content": {
+              "image/jpeg": {}
+            }
+          },
+          "400": {
+            "description": "Image file exceeds the 20 MB limit"
+          },
+          "500": {
+            "description": "Image compression failed"
+          }
+        }
+      }
+    },
+    "/number-details-extraction": {
+      "post": {
+        "summary": "Verify phone number details",
+        "description": "This endpoint accepts a phone number as string and an optional region code to verify its validity. Example: {\"phone_number\": \"1234567890\",  \"region\":  \"IN\"}",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone_number": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string",
+                    "example": "IN"
+                  }
+                },
+                "required": ["phone_number"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Phone number details successfully verified",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valid": {
+                      "type": "boolean"
+                    },
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid phone number"
+          },
+          "500": {
+            "description": "Failed to verify phone number"
+          }
+        }
+      }
+    },
+    "/face-verification": {
+      "post": {
+        "summary": "Verify face similarity between two images",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image1": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "image2": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image1", "image2"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully verified face similarity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "similarity": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file type. Please upload valid image files."
+          },
+          "500": {
+            "description": "Face verification failed"
+          }
+        }
+      }
+    },
+    "/create_liveness_session": {
+      "post": {
+        "summary": "Creates a Face Liveness Session",
+        "responses": {
+          "200": {
+            "description": "Successfully created Face Liveness session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "SessionId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error creating session"
+          }
+        }
+      }
+    },
+    "/get_liveness_results": {
+      "post": {
+        "summary": "Fetches results for a Face Liveness session",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "SessionId": {
+                    "type": "string"
+                  }
+                },
+                "required": ["SessionId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved liveness results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "SessionId": {
+                      "type": "string"
+                    },
+                    "Confidence": {
+                      "type": "number"
+                    },
+                    "Status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SessionId is required"
+          },
+          "500": {
+            "description": "Error fetching results"
+          }
+        }
+      }
+    },
+    "/create-email-code": {
+      "post": {
+        "summary": "Create a verification code for email",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification code sent successfully"
+          },
+          "400": {
+            "description": "Email is required"
+          },
+          "500": {
+            "description": "Failed to send verification code"
+          }
+        }
+      }
+    },
+    "/verify-email-code": {
+      "post": {
+        "summary": "Verify email verification code",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "code"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email verified successfully"
+          },
+          "400": {
+            "description": "Invalid or expired code"
+          },
+          "500": {
+            "description": "Error during email verification"
+          }
+        }
+      }
+    },
+    "/create_mobile_otp": {
+      "post": {
+        "summary": "Send OTP to a mobile number",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mobile": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["mobile"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "session_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mobile number is required"
+          },
+          "500": {
+            "description": "Failed to send OTP"
+          }
+        }
+      }
+    },
+    "/verify_mobile_otp": {
+      "post": {
+        "summary": "Verify OTP for a mobile number",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mobile": {
+                    "type": "integer"
+                  },
+                  "otp": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["mobile", "otp"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP verified successfully"
+          },
+          "400": {
+            "description": "OTP verification failed"
+          },
+          "500": {
+            "description": "Error during OTP verification"
+          }
+        }
+      }
+    },
+    "/get-public-ip": {
+      "get": {
+        "summary": "Returns the public IP address of the client",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved public IP address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "public_ip": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unable to retrieve public IP address"
+          }
+        }
+      }
+    },
+    "/get-geolocation": {
+      "get": {
+        "summary": "Returns the geolocation of the client based on their IP address",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved geolocation information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ip": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "region": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unable to fetch geolocation"
+          }
+        }
+      }
+    },
+    "/get-geolocation-plus": {
+      "get": {
+        "summary": "Get dynamic geolocation info for the client's IP",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dynamic geolocation information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ip": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "continent": {
+                      "type": "string"
+                    },
+                    "continent_code": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "country_code": {
+                      "type": "string"
+                    },
+                    "region": {
+                      "type": "string"
+                    },
+                    "region_code": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "is_eu": {
+                      "type": "boolean"
+                    },
+                    "postal": {
+                      "type": "string"
+                    },
+                    "timezone": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "abbr": {
+                          "type": "string"
+                        },
+                        "is_dst": {
+                          "type": "boolean"
+                        },
+                        "offset": {
+                          "type": "integer"
+                        },
+                        "utc": {
+                          "type": "string"
+                        },
+                        "current_time": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "connection": {
+                      "type": "object",
+                      "properties": {
+                        "asn": {
+                          "type": "integer"
+                        },
+                        "org": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unable to fetch dynamic geolocation data"
+          }
+        }
+      }
+    },
+    "/reverse-geocode": {
+      "get": {
+        "summary": "Reverse geocode latitude and longitude into detailed location data",
+        "parameters": [
+          {
+            "name": "latitude",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 37.7749
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": -122.4194
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully reverse geocoded the coordinates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "continent": {
+                      "type": "string"
+                    },
+                    "continent_code": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "country_code": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "state_code": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "locality": {
+                      "type": "string"
+                    },
+                    "postal_code": {
+                      "type": "string"
+                    },
+                    "plus_code": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid coordinates"
+          },
+          "500": {
+            "description": "Unable to reverse geocode the coordinates"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health check endpoint",
+        "responses": {
+          "200": {
+            "description": "API is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
