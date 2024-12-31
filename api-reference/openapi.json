@@ -293,7 +293,8 @@
               "image/png": {
                 "schema": {
                   "type": "string",
-                  "format": "binary"
+                  "format": "binary",
+                  "example": "data:image/png;base64,..."
                 }
               }
             }
