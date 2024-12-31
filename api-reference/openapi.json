@@ -2038,76 +2038,117 @@
     "/get-geolocation-plus": {
       "get": {
         "summary": "Get dynamic geolocation info for the client's IP",
+        "description": "This endpoint retrieves detailed geolocation information, including timezone and connection details, for the client based on their public IP address.",
         "responses": {
           "200": {
-            "description": "Successfully retrieved dynamic geolocation information",
+            "description": "Successfully retrieved dynamic geolocation information.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "ip": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The public IP address of the client.",
+                      "example": "2405:201:2014:6948:3953:3d44:e3c4:c66f"
                     },
                     "success": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Indicates if the geolocation retrieval was successful.",
+                      "example": true
                     },
                     "type": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The type of IP address (IPv4 or IPv6).",
+                      "example": "IPv6"
                     },
                     "continent": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The continent of the client's location.",
+                      "example": "Asia"
                     },
                     "continent_code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The continent code of the client's location.",
+                      "example": "AS"
                     },
                     "country": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The country of the client's location.",
+                      "example": "India"
                     },
                     "country_code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The country code of the client's location.",
+                      "example": "IN"
                     },
                     "region": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The region or state of the client's location.",
+                      "example": "Gujarat"
                     },
                     "region_code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The region code of the client's location.",
+                      "example": "GJ"
                     },
                     "city": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The city of the client's location.",
+                      "example": "Surat"
                     },
                     "latitude": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The latitude coordinate of the client's location.",
+                      "example": 21.1888
                     },
                     "longitude": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The longitude coordinate of the client's location.",
+                      "example": 72.8293
                     },
                     "is_eu": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Indicates if the client's location is in the European Union.",
+                      "example": false
                     },
                     "postal": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The postal code of the client's location.",
+                      "example": "395005"
                     },
                     "timezone": {
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The timezone identifier.",
+                          "example": "Asia/Kolkata"
                         },
                         "abbr": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The abbreviation of the timezone.",
+                          "example": "IST"
                         },
                         "is_dst": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indicates if Daylight Saving Time is active.",
+                          "example": false
                         },
                         "offset": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The UTC offset in seconds.",
+                          "example": 19800
                         },
                         "utc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The UTC offset in hours and minutes.",
+                          "example": "+05:30"
                         },
                         "current_time": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The current time in the client's timezone.",
+                          "example": "2024-12-31T14:42:15.286191+05:30"
                         }
                       }
                     },
@@ -2115,20 +2156,66 @@
                       "type": "object",
                       "properties": {
                         "asn": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The Autonomous System Number (ASN) of the client's connection.",
+                          "example": 55836
                         },
                         "org": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The organization associated with the ASN.",
+                          "example": "Reliance Jio Infocomm Limited"
                         }
                       }
                     }
+                  }
+                },
+                "example": {
+                  "ip": "2405:201:2014:6948:3953:3d44:e3c4:c66f",
+                  "success": true,
+                  "type": "IPv6",
+                  "continent": "Asia",
+                  "continent_code": "AS",
+                  "country": "India",
+                  "country_code": "IN",
+                  "region": "Gujarat",
+                  "region_code": "GJ",
+                  "city": "Surat",
+                  "latitude": 21.1888,
+                  "longitude": 72.8293,
+                  "is_eu": false,
+                  "postal": "395005",
+                  "timezone": {
+                    "id": "Asia/Kolkata",
+                    "abbr": "IST",
+                    "is_dst": false,
+                    "offset": 19800,
+                    "utc": "+05:30",
+                    "current_time": "2024-12-31T14:42:15.286191+05:30"
+                  },
+                  "connection": {
+                    "asn": 55836,
+                    "org": "Reliance Jio Infocomm Limited"
                   }
                 }
               }
             }
           },
           "500": {
-            "description": "Unable to fetch dynamic geolocation data"
+            "description": "Unable to fetch dynamic geolocation data due to an internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error.",
+                      "example": "Failed to retrieve dynamic geolocation information."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2136,29 +2223,33 @@
     "/reverse-geocode": {
       "get": {
         "summary": "Reverse geocode latitude and longitude into detailed location data",
+        "description": "This endpoint takes latitude and longitude coordinates and returns detailed location data including country, state, city, and additional metadata.",
         "parameters": [
           {
             "name": "latitude",
             "in": "query",
             "required": true,
+            "description": "The latitude of the location to reverse geocode.",
             "schema": {
               "type": "number",
-              "example": 37.7749
+              "example": 21.1888
             }
           },
           {
             "name": "longitude",
             "in": "query",
             "required": true,
+            "description": "The longitude of the location to reverse geocode.",
             "schema": {
               "type": "number",
-              "example": -122.4194
+              "example": 72.8293
             }
           },
           {
             "name": "language",
             "in": "query",
             "required": false,
+            "description": "The preferred language for the result.",
             "schema": {
               "type": "string",
               "default": "en",
@@ -2168,75 +2259,119 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully reverse geocoded the coordinates",
+            "description": "Successfully reverse geocoded the coordinates.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "latitude": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The latitude of the location.",
+                      "example": 21.1888
                     },
                     "longitude": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The longitude of the location.",
+                      "example": 72.8293
                     },
                     "continent": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The continent of the location.",
+                      "example": "Asia"
                     },
                     "continent_code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The continent code of the location.",
+                      "example": "AS"
                     },
                     "country": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The country of the location.",
+                      "example": "India"
                     },
                     "country_code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The country code of the location.",
+                      "example": "IN"
                     },
                     "state": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The state of the location.",
+                      "example": "Gujarat"
                     },
                     "state_code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The state code of the location.",
+                      "example": "IN-GJ"
                     },
                     "city": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The city of the location.",
+                      "example": "Surat"
                     },
                     "locality": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The locality of the location.",
+                      "example": "Surat"
                     },
                     "postal_code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The postal code of the location.",
+                      "example": ""
                     },
                     "plus_code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The Plus Code of the location.",
+                      "example": "7JHJ5RQH+GP"
+                    }
+                  }
+                },
+                "example": {
+                  "latitude": 21.1888,
+                  "longitude": 72.8293,
+                  "continent": "Asia",
+                  "continent_code": "AS",
+                  "country": "India",
+                  "country_code": "IN",
+                  "state": "Gujarat",
+                  "state_code": "IN-GJ",
+                  "city": "Surat",
+                  "locality": "Surat",
+                  "postal_code": "",
+                  "plus_code": "7JHJ5RQH+GP"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid coordinates provided. The latitude or longitude may be out of range.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the invalid coordinates.",
+                      "example": "Invalid latitude or longitude."
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid coordinates"
-          },
           "500": {
-            "description": "Unable to reverse geocode the coordinates"
-          }
-        }
-      }
-    },
-    "/health": {
-      "get": {
-        "summary": "Health check endpoint",
-        "responses": {
-          "200": {
-            "description": "API is healthy",
+            "description": "Unable to reverse geocode the coordinates due to an internal server error.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": {
-                      "type": "string"
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error.",
+                      "example": "Failed to process the reverse geocode request."
                     }
                   }
                 }
