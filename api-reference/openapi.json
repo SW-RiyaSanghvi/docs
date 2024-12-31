@@ -1432,7 +1432,7 @@
         }
       }
     },
-    "/create_liveness_session": {
+    "/create-liveness-session": {
       "post": {
         "summary": "Creates a Face Liveness Session",
         "description": "This endpoint creates a Face Liveness session and returns a unique Session ID for the session.",
@@ -1482,7 +1482,7 @@
         }
       }
     },
-    "/get_liveness_results": {
+    "/get-liveness-results": {
       "post": {
         "summary": "Fetches results for a Face Liveness session",
         "requestBody": {
