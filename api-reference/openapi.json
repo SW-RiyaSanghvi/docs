@@ -1222,7 +1222,7 @@
                   "phone_number": {
                     "type": "string",
                     "description": "The phone number to verify.",
-                    "example": "9638251670"
+                    "example": "9351728394"
                   },
                   "region": {
                     "type": "string",
@@ -1247,7 +1247,7 @@
                     "phone_number": {
                       "type": "string",
                       "description": "The input phone number.",
-                      "example": "9638251670"
+                      "example": "9351728394"
                     },
                     "region": {
                       "type": "string",
@@ -1287,7 +1287,7 @@
                   }
                 },
                 "example": {
-                  "phone_number": "9638251670",
+                  "phone_number": "9351728394",
                   "region": "IN",
                   "valid": true,
                   "possible": true,
@@ -1435,24 +1435,49 @@
     "/create_liveness_session": {
       "post": {
         "summary": "Creates a Face Liveness Session",
+        "description": "This endpoint creates a Face Liveness session and returns a unique Session ID for the session.",
+        "requestBody": {
+          "description": "This endpoint does not require a request body.",
+          "required": false,
+          "content": {}
+        },
         "responses": {
           "200": {
-            "description": "Successfully created Face Liveness session",
+            "description": "Successfully created Face Liveness session.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "SessionId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The unique Session ID for the Face Liveness session.",
+                      "example": "7f62d883-a0b3-4c6d-af00-57d135f8a793"
                     }
                   }
+                },
+                "example": {
+                  "SessionId": "7f62d883-a0b3-4c6d-af00-57d135f8a793"
                 }
               }
             }
           },
           "500": {
-            "description": "Error creating session"
+            "description": "Error creating session. An unexpected error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error.",
+                      "example": "Failed to create Face Liveness session."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
