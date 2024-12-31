@@ -95,7 +95,7 @@
     "/document-identification": {
       "post": {
         "summary": "Identifies the card, its side, and if it's blurry or grayscale",
-        "description": "This endpoint detects the card type from an image, identifies its side (front or back), and checks if the image is blurry or grayscale.",
+        "description": "This API is designed to detect and classify identity cards, such as PAN and Aadhar cards, from input images. The service returns information about the detected card, whether the image is grayscale, and whether the image is blurry.",
         "requestBody": {
           "description": "Image file to be analyzed for card identification.",
           "content": {
@@ -123,29 +123,27 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "cardType": {
-                      "type": "string",
-                      "description": "The type of card identified (e.g., ID card, credit card, etc.)."
+                    "card": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "The type of card identified (e.g., 'pan', 'adr_front', 'adr_back')."
+                      },
+                      "description": "The type of card detected."
                     },
-                    "side": {
-                      "type": "string",
-                      "enum": ["front", "back"],
-                      "description": "The identified side of the card (front or back)."
-                    },
-                    "isBlurry": {
-                      "type": "boolean",
-                      "description": "Indicates if the image is blurry."
-                    },
-                    "isGrayscale": {
+                    "is_grayscale": {
                       "type": "boolean",
                       "description": "Indicates if the image is grayscale."
+                    },
+                    "is_blur": {
+                      "type": "boolean",
+                      "description": "Indicates if the image is blurry."
                     }
                   },
                   "example": {
-                    "cardType": "ID card",
-                    "side": "front",
-                    "isBlurry": false,
-                    "isGrayscale": false
+                    "card": ["pan"],
+                    "is_grayscale": false,
+                    "is_blur": false
                   }
                 }
               }
