@@ -670,8 +670,10 @@
     },
     "/pan-ocr": {
       "post": {
-        "summary": "Extract relevant Data from the PAN Card",
+        "summary": "Extract relevant data from the PAN Card",
+        "description": "This endpoint extracts detailed information from a PAN card image, including PAN number, PAN type, Date of Birth, Name, and Father's Name.",
         "requestBody": {
+          "description": "The image of the PAN card for OCR processing.",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -679,41 +681,96 @@
                 "properties": {
                   "image": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "The image of the PAN card."
                   }
                 },
                 "required": ["image"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Successfully extracted PAN information",
+            "description": "Successfully extracted PAN information.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "pan_number": {
-                      "type": "string"
+                    "PAN_number": {
+                      "type": "string",
+                      "description": "The PAN number extracted from the card.",
+                      "example": "DJXPS8991H"
                     },
-                    "name": {
-                      "type": "string"
+                    "PAN_type": {
+                      "type": "string",
+                      "description": "The type of PAN card (e.g., 'Personal', 'Business').",
+                      "example": "Personal"
                     },
-                    "dob": {
-                      "type": "string"
+                    "Date_of_Birth": {
+                      "type": "string",
+                      "description": "The date of birth of the PAN card holder.",
+                      "example": "06/06/1980"
+                    },
+                    "Name": {
+                      "type": "string",
+                      "description": "The name of the PAN card holder.",
+                      "example": "T SENTHIL ARASU"
+                    },
+                    "Fathers_Name": {
+                      "type": "string",
+                      "description": "The father's name of the PAN card holder.",
+                      "example": "THANGARAJ"
+                    }
+                  }
+                },
+                "example": {
+                  "PAN_number": "DJXPS8991H",
+                  "PAN_type": "Personal",
+                  "Date_of_Birth": "06/06/1980",
+                  "Name": "T SENTHIL ARASU",
+                  "Fathers_Name": "THANGARAJ"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Unable to extract or verify PAN information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Invalid PAN card image or OCR processing failed."
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Unable to extract or verify PAN information"
-          },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error. An unexpected error occurred during OCR processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "OCR failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred while extracting data from the image."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
