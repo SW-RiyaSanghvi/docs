@@ -1659,113 +1659,260 @@
     "/verify-email-code": {
       "post": {
         "summary": "Verify email verification code",
+        "description": "This endpoint verifies the email verification code sent to the user. Both the email and the code must be provided.",
         "requestBody": {
+          "description": "The email address and verification code to verify.",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The email address to verify.",
+                    "example": "user@example.com"
                   },
                   "code": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The verification code sent to the email address.",
+                    "example": "123456"
                   }
                 },
                 "required": ["email", "code"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Email verified successfully"
-          },
-          "400": {
-            "description": "Invalid or expired code"
-          },
-          "500": {
-            "description": "Error during email verification"
-          }
-        }
-      }
-    },
-    "/create_mobile_otp": {
-      "post": {
-        "summary": "Send OTP to a mobile number",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "mobile": {
-                    "type": "integer"
-                  }
-                },
-                "required": ["mobile"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OTP sent successfully",
+            "description": "Email verified successfully.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "message": {
-                      "type": "string"
-                    },
-                    "session_id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Confirmation message indicating successful email verification.",
+                      "example": "Email verified successfully"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Email verified successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. The verification code is invalid or expired.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "Details about why the verification failed.",
+                      "example": "Invalid or expired verification code."
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Mobile number is required"
-          },
           "500": {
-            "description": "Failed to send OTP"
+            "description": "Internal Server Error. An unexpected error occurred during email verification.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error.",
+                      "example": "Error verifying the email code due to an internal error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/verify_mobile_otp": {
+    "/create-mobile-otp": {
       "post": {
-        "summary": "Verify OTP for a mobile number",
+        "summary": "Send OTP to a mobile number",
+        "description": "This endpoint sends a One-Time Password (OTP) to the provided mobile number and returns a session ID for further verification.",
         "requestBody": {
+          "description": "The mobile number to which the OTP will be sent.",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "mobile": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The mobile number to send the OTP.",
+                    "example": 9876543210
+                  }
+                },
+                "required": ["mobile"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OTP sent successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "A message confirming the OTP was sent.",
+                      "example": "OTP sent successfully"
+                    },
+                    "session_id": {
+                      "type": "string",
+                      "description": "The session ID for the OTP verification process.",
+                      "example": "a9fa3a1c-ddba-447c-8f62-85c72e234163"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "OTP sent successfully",
+                  "session_id": "a9fa3a1c-ddba-447c-8f62-85c72e234163"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. The mobile number is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "Details about why the request is invalid.",
+                      "example": "Mobile number is required."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. An error occurred while sending the OTP.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error.",
+                      "example": "Failed to send OTP due to a server issue."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    },
+    "/verify-mobile-otp": {
+      "post": {
+        "summary": "Verify OTP for a mobile number",
+        "description": "This endpoint verifies the One-Time Password (OTP) for a given mobile number.",
+        "requestBody": {
+          "description": "The mobile number and OTP to verify.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mobile": {
+                    "type": "integer",
+                    "description": "The mobile number associated with the OTP.",
+                    "example": 9876543210
                   },
                   "otp": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The OTP to verify.",
+                    "example": 123456
                   }
                 },
                 "required": ["mobile", "otp"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "OTP verified successfully"
+            "description": "OTP verified successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Confirmation message indicating successful OTP verification.",
+                      "example": "OTP verified successfully"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "OTP verified successfully"
+                }
+              }
+            }
           },
           "400": {
-            "description": "OTP verification failed"
+            "description": "Bad Request. OTP verification failed due to an invalid or expired OTP.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "Details about why the OTP verification failed.",
+                      "example": "Invalid or expired OTP."
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Error during OTP verification"
+            "description": "Internal Server Error. An error occurred during OTP verification.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error.",
+                      "example": "Failed to verify OTP due to a server issue."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
