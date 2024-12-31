@@ -1211,50 +1211,127 @@
     "/number-details-extraction": {
       "post": {
         "summary": "Verify phone number details",
-        "description": "This endpoint accepts a phone number as string and an optional region code to verify its validity. Example: {\"phone_number\": \"1234567890\",  \"region\":  \"IN\"}",
+        "description": "This endpoint accepts a phone number and an optional region code to verify its validity.",
         "requestBody": {
+          "description": "The phone number to verify, along with an optional region code.",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "phone_number": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The phone number to verify.",
+                    "example": "9638251670"
                   },
                   "region": {
                     "type": "string",
+                    "description": "The optional region code for the phone number.",
                     "example": "IN"
                   }
                 },
                 "required": ["phone_number"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Phone number details successfully verified",
+            "description": "Phone number details successfully verified.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "valid": {
-                      "type": "boolean"
+                    "phone_number": {
+                      "type": "string",
+                      "description": "The input phone number.",
+                      "example": "9638251670"
                     },
+                    "region": {
+                      "type": "string",
+                      "description": "The region code associated with the phone number.",
+                      "example": "IN"
+                    },
+                    "valid": {
+                      "type": "boolean",
+                      "description": "Indicates if the phone number is valid.",
+                      "example": true
+                    },
+                    "possible": {
+                      "type": "boolean",
+                      "description": "Indicates if the phone number is possible.",
+                      "example": true
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "The country associated with the phone number.",
+                      "example": "India"
+                    },
+                    "location": {
+                      "type": "string",
+                      "description": "The location associated with the phone number.",
+                      "example": "India"
+                    },
+                    "carrier": {
+                      "type": "string",
+                      "description": "The carrier associated with the phone number, if available.",
+                      "example": ""
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of phone number (e.g., 'Mobile', 'Landline').",
+                      "example": "Mobile"
+                    }
+                  }
+                },
+                "example": {
+                  "phone_number": "9638251670",
+                  "region": "IN",
+                  "valid": true,
+                  "possible": true,
+                  "country": "India",
+                  "location": "India",
+                  "carrier": "",
+                  "type": "Mobile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid phone number. The phone number provided is either incorrectly formatted or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
                     "detail": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Details about why the phone number is invalid.",
+                      "example": "Invalid phone number format."
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid phone number"
-          },
           "500": {
-            "description": "Failed to verify phone number"
+            "description": "Failed to verify phone number. An unexpected error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error.",
+                      "example": "Unable to verify phone number due to an internal error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1262,7 +1339,9 @@
     "/face-verification": {
       "post": {
         "summary": "Verify face similarity between two images",
+        "description": "This endpoint accepts two images and verifies if the faces in the images match. It provides a verification status, confidence level, and a descriptive message.",
         "requestBody": {
+          "description": "Two images for face similarity verification.",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -1270,39 +1349,85 @@
                 "properties": {
                   "image1": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "The first image for face verification."
                   },
                   "image2": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "The second image for face verification."
                   }
                 },
                 "required": ["image1", "image2"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Successfully verified face similarity",
+            "description": "Successfully verified face similarity.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "similarity": {
-                      "type": "number"
+                    "verified": {
+                      "type": "boolean",
+                      "description": "Indicates whether the faces in the images match.",
+                      "example": true
+                    },
+                    "confidence": {
+                      "type": "number",
+                      "description": "The confidence level of the face match.",
+                      "example": 99.99960327148438
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A descriptive message regarding the face verification result.",
+                      "example": "Faces match with 100.00% confidence."
+                    }
+                  }
+                },
+                "example": {
+                  "verified": true,
+                  "confidence": 99.99960327148438,
+                  "message": "Faces match with 100.00% confidence."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file type. Please upload valid image files.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Invalid file type. Please upload valid image files."
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid file type. Please upload valid image files."
-          },
           "500": {
-            "description": "Face verification failed"
+            "description": "Face verification failed. An unexpected error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Face verification failed due to an internal error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
