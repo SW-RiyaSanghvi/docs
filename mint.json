@@ -77,8 +77,8 @@
     {
       "group": "Endpoint Examples",
       "pages": [
-        "api-reference/endpoint/compress-extreme-image",
         "api-reference/endpoint/document-identification",
+        "api-reference/endpoint/compress-extreme-image",
         "api-reference/endpoint/pan-signature-extraction",
         "api-reference/endpoint/picture-extraction",
         "api-reference/endpoint/internal-verification",
