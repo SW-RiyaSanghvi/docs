@@ -340,7 +340,7 @@
     },
     "/internal-verification": {
       "post": {
-        "summary": "Verify if the extracted information from cards are as per gov guidelines to mitigate tamper",
+        "summary": "Verify if the extracted information from cards are as per government guidelines to mitigate tamper",
         "description": "This endpoint accepts an Aadhaar Number for Aadhaar internal verification or a PAN Number (with an optional Name) for PAN internal verification.",
         "requestBody": {
           "description": "A JSON object containing Aadhaar or PAN card details for internal verification.",
@@ -368,19 +368,26 @@
         },
         "responses": {
           "200": {
-            "description": "Verification result, either success or failure with explanation.",
+            "description": "Verification result, including whether it was successful, a message, and additional details like PAN type.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Verification successful."
+                    "verified": {
+                      "type": "boolean",
+                      "description": "Indicates if the verification was successful.",
+                      "example": true
                     },
-                    "details": {
+                    "message": {
                       "type": "string",
-                      "example": "Aadhaar and PAN verification passed according to government guidelines."
+                      "description": "A message indicating the result of the verification.",
+                      "example": "PAN Verified"
+                    },
+                    "pan_type": {
+                      "type": "string",
+                      "description": "The type of PAN card verified (e.g., 'Personal', 'Business').",
+                      "example": "Personal"
                     }
                   }
                 }
