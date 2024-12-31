@@ -435,8 +435,8 @@
     },
     "/aadhaar-demographic-verification": {
       "post": {
-        "summary": "Extracts basic details of the non-consent use from Aadhar images",
-        "description": "This endpoint accepts a JSON Aadhaar Number, pincode and dob as a string. Example: {\"aadhaar_number\": \"645612790918\", \"dob\": \"12/02/1998\", \"pincode\": \"380245\"}",
+        "summary": "Extracts basic details for demographic verification from Aadhaar inputs",
+        "description": "This endpoint accepts Aadhaar Number, pincode, and date of birth (DOB) as input. It verifies the details and returns a response with the verification status, associated state, and age band.",
         "requestBody": {
           "description": "The Aadhaar number, date of birth, and pincode for demographic verification.",
           "content": {
@@ -472,21 +472,47 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "verification_status": {
+                    "Verification": {
                       "type": "string",
-                      "example": "Verified"
+                      "description": "Verification status message.",
+                      "example": "Successful!"
                     },
-                    "message": {
+                    "State": {
                       "type": "string",
-                      "example": "The demographic details are valid."
+                      "description": "The state associated with the Aadhaar number.",
+                      "example": "Gujarat"
+                    },
+                    "Age Band": {
+                      "type": "object",
+                      "description": "The age band determined based on the date of birth.",
+                      "properties": {
+                        "lower_limit": {
+                          "type": "string",
+                          "description": "The lower age limit of the band.",
+                          "example": "20"
+                        },
+                        "upper_limit": {
+                          "type": "string",
+                          "description": "The upper age limit of the band.",
+                          "example": "30"
+                        }
+                      }
                     }
+                  }
+                },
+                "example": {
+                  "Verification": "Successful!",
+                  "State": "Gujarat",
+                  "Age Band": {
+                    "lower_limit": "20",
+                    "upper_limit": "30"
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request. Possible issues: missing or invalid Aadhaar number, dob, or pincode.",
+            "description": "Bad Request. Possible issues: missing or invalid Aadhaar number, DOB, or pincode.",
             "content": {
               "application/json": {
                 "schema": {
