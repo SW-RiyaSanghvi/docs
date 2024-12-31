@@ -1578,30 +1578,80 @@
     "/create-email-code": {
       "post": {
         "summary": "Create a verification code for email",
+        "description": "This endpoint generates and sends a verification code to the provided email address.",
         "requestBody": {
+          "description": "The email address to which the verification code will be sent.",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The email address for which the verification code is to be generated.",
+                    "example": "user@example.com"
                   }
                 },
                 "required": ["email"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Verification code sent successfully"
+            "description": "Verification code sent successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Confirmation message indicating the verification code was sent.",
+                      "example": "Verification code sent successfully"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Verification code sent successfully"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Email is required"
+            "description": "Bad Request. The email field is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "Details about the error.",
+                      "example": "Email is required."
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Failed to send verification code"
+            "description": "Internal Server Error. Failed to send the verification code due to a server issue.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error.",
+                      "example": "Failed to send verification code."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
