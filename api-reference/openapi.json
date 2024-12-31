@@ -777,8 +777,10 @@
     },
     "/image-quality-analyzer": {
       "post": {
-        "summary": "Analyzes images based on various standard scores like BRISQUE, blurriness, etc.",
+        "summary": "Analyzes images based on various standard scores like BRISQUE, blurriness, brightness, and more.",
+        "description": "This endpoint analyzes the quality of an image and provides various standard scores such as blurriness, BRISQUE, background uniformity, brightness, and contrast.",
         "requestBody": {
+          "description": "The image file to be analyzed for quality.",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -786,46 +788,118 @@
                 "properties": {
                   "image": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "The image file to analyze."
                   }
                 },
                 "required": ["image"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Successfully analyzed image quality",
+            "description": "Successfully analyzed image quality.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "brisque_score": {
-                      "type": "number"
+                    "is_grayscale": {
+                      "type": "boolean",
+                      "description": "Indicates whether the image is in grayscale.",
+                      "example": false
+                    },
+                    "is_blur": {
+                      "type": "boolean",
+                      "description": "Indicates whether the image is blurry.",
+                      "example": false
                     },
                     "blurriness_score": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The calculated blurriness score of the image.",
+                      "example": 23.67
+                    },
+                    "brisque_score": {
+                      "type": "number",
+                      "description": "The BRISQUE score indicating overall image quality.",
+                      "example": 40.13
+                    },
+                    "background_uniformity_score": {
+                      "type": "number",
+                      "description": "The uniformity of the background in the image.",
+                      "example": 76.00
+                    },
+                    "brightness_score": {
+                      "type": "number",
+                      "description": "The brightness level of the image.",
+                      "example": 22.41
+                    },
+                    "contrast_score": {
+                      "type": "number",
+                      "description": "The contrast level of the image.",
+                      "example": 92.97
+                    }
+                  }
+                },
+                "example": {
+                  "is_grayscale": false,
+                  "is_blur": false,
+                  "blurriness_score": "23.67",
+                  "brisque_score": "40.13",
+                  "background_uniformity_score": "76.00",
+                  "brightness_score": "22.41",
+                  "contrast_score": "92.97"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Invalid or unsupported image file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Invalid image file format or corrupted image."
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid image file"
-          },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error. An unexpected error occurred during image analysis.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Image analysis failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred while processing the image."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/aadhaar-demographic-ocr": {
       "post": {
-        "summary": "Extracts basic details of the non-consent use from Aadhar images",
+        "summary": "Extracts basic demographic details from Aadhaar images",
+        "description": "This endpoint extracts demographic details such as Aadhaar Number, Gender, Age Range, and State from the provided Aadhaar card images.",
         "requestBody": {
+          "description": "Two images of the Aadhaar card for OCR processing. The first image is the front side, and the second image is the back side.",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -833,48 +907,95 @@
                 "properties": {
                   "image1": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "The first image (front side of the Aadhaar card)."
                   },
                   "image2": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "The second image (back side of the Aadhaar card)."
                   }
                 },
                 "required": ["image1", "image2"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Successfully extracted demographic details from Aadhaar images",
+            "description": "Successfully extracted demographic details from Aadhaar images.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "aadhaar_number": {
-                      "type": "string"
+                    "Aadhaar Number": {
+                      "type": "string",
+                      "description": "The Aadhaar number extracted from the card.",
+                      "example": "XXXX XXXX 3712"
                     },
-                    "name": {
-                      "type": "string"
+                    "Gender": {
+                      "type": "string",
+                      "description": "The gender of the Aadhaar holder.",
+                      "example": "Male"
                     },
-                    "dob": {
-                      "type": "string"
+                    "Age Range": {
+                      "type": "string",
+                      "description": "The age range derived from the Aadhaar holder's date of birth.",
+                      "example": "20-30"
                     },
-                    "gender": {
-                      "type": "string"
+                    "State": {
+                      "type": "string",
+                      "description": "The state associated with the Aadhaar number.",
+                      "example": "Gujarat"
+                    }
+                  }
+                },
+                "example": {
+                  "Aadhaar Number": "XXXX XXXX 3712",
+                  "Gender": "Male",
+                  "Age Range": "20-30",
+                  "State": "Gujarat"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Unable to extract or verify Aadhaar demographic information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "example": "Invalid Aadhaar images provided or OCR processing failed."
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Unable to extract or verify Aadhaar demographic information"
-          },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error. An unexpected error occurred during OCR processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "OCR processing failed."
+                    },
+                    "details": {
+                      "type": "string",
+                      "example": "An unexpected error occurred while extracting data from the images."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
