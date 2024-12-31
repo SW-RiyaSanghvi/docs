@@ -2221,38 +2221,42 @@
       }
     },
     "/reverse-geocode": {
-      "post": {
+      "get": {
         "summary": "Reverse geocode latitude and longitude into detailed location data",
-        "description": "This endpoint takes latitude and longitude coordinates in the request body and returns detailed location data, including country, state, city, and additional metadata.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "latitude": {
-                    "type": "number",
-                    "description": "The latitude of the location to reverse geocode.",
-                    "example": 21.1888
-                  },
-                  "longitude": {
-                    "type": "number",
-                    "description": "The longitude of the location to reverse geocode.",
-                    "example": 72.8293
-                  },
-                  "language": {
-                    "type": "string",
-                    "description": "The preferred language for the result.",
-                    "default": "en",
-                    "example": "en"
-                  }
-                },
-                "required": ["latitude", "longitude"]
-              }
+        "description": "This endpoint takes latitude and longitude coordinates and returns detailed location data including country, state, city, and additional metadata.",
+        "parameters": [
+          {
+            "name": "latitude",
+            "in": "query",
+            "required": true,
+            "description": "The latitude of the location to reverse geocode.",
+            "schema": {
+              "type": "number",
+              "example": 21.1888
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "required": true,
+            "description": "The longitude of the location to reverse geocode.",
+            "schema": {
+              "type": "number",
+              "example": 72.8293
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "description": "The preferred language for the result.",
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "example": "en"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Successfully reverse geocoded the coordinates.",
