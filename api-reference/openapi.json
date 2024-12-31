@@ -1918,24 +1918,44 @@
     "/get-public-ip": {
       "get": {
         "summary": "Returns the public IP address of the client",
+        "description": "This endpoint retrieves and returns the public IP address of the client making the request.",
         "responses": {
           "200": {
-            "description": "Successfully retrieved public IP address",
+            "description": "Successfully retrieved public IP address.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "public_ip": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The public IP address of the client.",
+                      "example": "2405:201:2014:6948:3953:3d44:e3c4:c66f"
                     }
                   }
+                },
+                "example": {
+                  "public_ip": "2405:201:2014:6948:3953:3d44:e3c4:c66f"
                 }
               }
             }
           },
           "500": {
-            "description": "Unable to retrieve public IP address"
+            "description": "Unable to retrieve public IP address due to an internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error.",
+                      "example": "Failed to retrieve public IP address."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
