@@ -58,13 +58,7 @@
       ]
     },
     {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
+      "group": "API Reference",
       "pages": [
         "api-reference/endpoint/document-identification",
         "api-reference/endpoint/pan-signature-extraction",
