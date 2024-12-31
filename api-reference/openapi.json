@@ -933,30 +933,30 @@
                     "Aadhaar Number": {
                       "type": "string",
                       "description": "The Aadhaar number extracted from the card.",
-                      "example": "XXXX XXXX 3712"
+                      "example": "XXXX XXXX 0599"
                     },
                     "Gender": {
                       "type": "string",
                       "description": "The gender of the Aadhaar holder.",
-                      "example": "Male"
+                      "example": "Female"
                     },
                     "Age Range": {
                       "type": "string",
                       "description": "The age range derived from the Aadhaar holder's date of birth.",
-                      "example": "20-30"
+                      "example": "40-50"
                     },
                     "State": {
                       "type": "string",
                       "description": "The state associated with the Aadhaar number.",
-                      "example": "Gujarat"
+                      "example": "Kerela"
                     }
                   }
                 },
                 "example": {
-                  "Aadhaar Number": "XXXX XXXX 3712",
-                  "Gender": "Male",
-                  "Age Range": "20-30",
-                  "State": "Gujarat"
+                  "Aadhaar Number": "XXXX XXXX 0599",
+                  "Gender": "Female",
+                  "Age Range": "40-50",
+                  "State": "Kerela"
                 }
               }
             }
