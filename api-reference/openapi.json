@@ -190,8 +190,8 @@
     },
     "/pan-signature-extraction": {
       "post": {
-        "summary": "Extract signature of the person from PAN card",
-        "description": "This endpoint extracts the signature from a PAN card image and returns the signature as a PNG image.",
+        "summary": "Extract the signature of the person from a PAN card",
+        "description": "This endpoint processes the image of a PAN card and extracts the person's signature, returning it as a PNG image. The image must clearly show the signature section of the PAN card to ensure accurate extraction.",
         "requestBody": {
           "description": "Image file of the PAN card from which the signature is to be extracted.",
           "content": {
@@ -218,7 +218,8 @@
               "image/png": {
                 "schema": {
                   "type": "string",
-                  "format": "binary"
+                  "format": "binary",
+                  "example": "data:image/png;base64,..."
                 }
               }
             }
