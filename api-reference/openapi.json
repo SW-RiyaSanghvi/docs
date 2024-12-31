@@ -1485,48 +1485,92 @@
     "/get-liveness-results": {
       "post": {
         "summary": "Fetches results for a Face Liveness session",
+        "description": "This endpoint retrieves the liveness verification results for a given session using the provided `SessionId`.",
         "requestBody": {
+          "description": "The SessionId of the liveness session for which results are to be fetched.",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "SessionId": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The unique SessionId for the liveness session.",
+                    "example": "34db5add-aa35-438a-af74-6caedf9ab67b"
                   }
                 },
                 "required": ["SessionId"]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Successfully retrieved liveness results",
+            "description": "Successfully retrieved liveness results.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "SessionId": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The SessionId for which results were retrieved.",
+                      "example": "34db5add-aa35-438a-af74-6caedf9ab67b"
                     },
                     "Confidence": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The confidence score for the liveness verification.",
+                      "example": 0
                     },
                     "Status": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The status of the liveness session.",
+                      "example": "CREATED"
+                    }
+                  }
+                },
+                "example": {
+                  "SessionId": "34db5add-aa35-438a-af74-6caedf9ab67b",
+                  "Confidence": 0,
+                  "Status": "CREATED"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. The `SessionId` is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "description": "Error message indicating what is wrong with the request.",
+                      "example": "SessionId is required."
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "SessionId is required"
-          },
           "500": {
-            "description": "Error fetching results"
+            "description": "Internal Server Error. An unexpected error occurred while fetching liveness results.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error.",
+                      "example": "Failed to fetch liveness results due to an internal error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
