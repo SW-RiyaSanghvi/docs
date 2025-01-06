@@ -220,7 +220,12 @@
                   "type": "string",
                   "format": "binary",
                   "example": {
-                    "$ref": "./examples/133701064953517657.jpg"
+                    "signature": {
+                      "summary": "Sample signature image",
+                      "value": {
+                        "url": "./examples/example.png"
+                      }
+                    }
                   }
                 }
               }
