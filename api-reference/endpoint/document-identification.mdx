@@ -3,8 +3,35 @@ title: 'Document Identification'
 openapi: 'POST /document-identification'
 ---
 
-### File Upload
+
+## Document Identification API
+
+Upload an image of an identification document (PAN card or Aadhar card) to detect its type and quality.
+
+### Request Body
 
 <ParamField body="image" type="file" required>
-  The image file to be processed (supports common image formats)
+  The image file to be analyzed (supports common image formats like JPG, PNG)
 </ParamField>
+
+### Response
+
+<ResponseField name="card" type="array">
+  Array of detected card types (e.g., ["pan"], ["adr_front"], ["adr_back"])
+</ResponseField>
+
+<ResponseField name="is_grayscale" type="boolean">
+  Indicates if the uploaded image is grayscale
+</ResponseField>
+
+<ResponseField name="is_blur" type="boolean">
+  Indicates if the uploaded image is blurry
+</ResponseField>
+
+### Example Request
+
+curl --request POST
+--url https://eem8awwavp.us-east-1.awsapprunner.com/api/v1/document-identification
+--header 'Authorization: Bearer YOUR_TOKEN_HERE'
+--header 'Content-Type: multipart/form-data'
+--form 'image=@C:\Users\padma\OneDrive\Pictures\133701064953517657.jpg'
