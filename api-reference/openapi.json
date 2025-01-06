@@ -101,7 +101,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
+                "type": "image/jpeg",
                 "properties": {
                   "image": {
                     "type": "string",
