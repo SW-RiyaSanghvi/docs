@@ -101,10 +101,10 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "image/jpeg",
+                "type": "object",
                 "properties": {
                   "image": {
-                    "type": "string",
+                    "type": "jpeg",
                     "format": "binary",
                     "description": "The image file to analyze."
                   }
