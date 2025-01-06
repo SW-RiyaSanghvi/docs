@@ -104,7 +104,7 @@
                 "type": "object",
                 "properties": {
                   "image": {
-                    "type": "jpeg",
+                    "type": "string",
                     "format": "binary",
                     "description": "The image file to analyze."
                   }
