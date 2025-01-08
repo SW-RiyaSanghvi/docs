@@ -367,7 +367,7 @@
                     "example": "Your Name"
                   }
                 },
-                "required": ["Aadhaar_or_PAN_number"]
+                "required": ["Aadhaar_number"]
               }
             }
           },
