@@ -358,20 +358,24 @@
                 "properties": {
                   "Aadhaar_number": {
                     "type": "string",
-                    "description": "Aadhaar number or PAN number for internal verification.",
+                    "description": "Aadhaar number for internal verification.",
                     "example": "645612790918"
+                  },
+                  "PAN_number": {
+                    "type": "string",
+                    "description": "PAN number for internal verification.",
+                    "example": "AGEPS3678P"
                   },
                   "Name": {
                     "type": "string",
                     "description": "Holder's name for PAN verification (optional).",
                     "example": "Your Name"
                   }
-                },
-                "required": ["Aadhaar_number"]
+                }
               }
             }
           },
-          "required": true
+          "required": false
         },
         "responses": {
           "200": {
