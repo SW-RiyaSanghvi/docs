@@ -1749,7 +1749,7 @@
         }
       }
     },
-    "/create-mobile-otp": {
+    "/create_mobile_otp": {
       "post": {
         "summary": "Send OTP to a mobile number",
         "description": "This endpoint sends a One-Time Password (OTP) to the provided mobile number and returns a session ID for further verification.",
@@ -1836,7 +1836,7 @@
         }
       }
     },
-    "/verify-mobile-otp": {
+    "/verify_mobile_otp": {
       "post": {
         "summary": "Verify OTP for a mobile number",
         "description": "This endpoint verifies the One-Time Password (OTP) for a given mobile number.",
