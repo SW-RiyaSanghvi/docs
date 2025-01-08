@@ -356,7 +356,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "Aadhaar_or_PAN_number": {
+                  "Aadhaar_number": {
                     "type": "string",
                     "description": "Aadhaar number or PAN number for internal verification.",
                     "example": "645612790918"
