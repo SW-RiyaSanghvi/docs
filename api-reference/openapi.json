@@ -103,13 +103,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "file": {
+                  "image": {
                     "type": "string",
                     "format": "binary",
                     "description": "The image file to analyze."
                   }
                 },
-                "required": ["file"]
+                "required": ["image"]
               }
             }
           },
